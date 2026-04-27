@@ -1,0 +1,11 @@
+asl_env/
+venv/
+env/
+*.h5
+*.dll
+*.pyd
+*.lib
+__pycache__/
+*.pyc
+asl_alphabet_train/
+asl_alphabet_test/

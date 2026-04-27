@@ -1,0 +1,5 @@
+ASL/
+asl_env/
+*.h5
+*.keras
+__pycache__/
