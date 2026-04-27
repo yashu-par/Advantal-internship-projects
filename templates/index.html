@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medico</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">+</div>
+      <div>
+        <div class="brand-name">Medico</div>
+        <div class="brand-sub"> PDF Assistant</div>
+      </div>
+    </div>
+
+    <button class="new-btn" onclick="newSession()">+ New Chat</button>
+
+    <!-- PDF Upload -->
+    <div class="sec-label">Upload PDF</div>
+    <div style="padding: 0 12px 12px;">
+      <input type="file" id="pdf-input" accept=".pdf"
+        style="display:none" onchange="uploadPDF(this)">
+      <button class="upload-btn" onclick="document.getElementById('pdf-input').click()">
+        + Add New PDF
+      </button>
+      <div id="upload-status" style="font-size:11px;color:#16a34a;margin-top:4px;"></div>
+    </div>
+
+    <div class="sec-label">SQLite Stats</div>
+    <div class="db-card">
+      <div class="db-row"><span>Sessions</span><b id="st-s">—</b></div>
+      <div class="db-row"><span>Queries</span><b id="st-q">—</b></div>
+      <div class="db-row"><span>Avg time</span><b id="st-t">—</b></div>
+      <div class="db-row"><span>File</span><b>medico.db</b></div>
+    </div>
+
+    <!-- Memory display -->
+    <div class="sec-label">Memory</div>
+    <div class="db-card" id="memory-card">
+      <div class="db-row"><span>Name</span><b id="mem-name">—</b></div>
+      <div class="db-row"><span>City</span><b id="mem-city">—</b></div>
+    </div>
+
+    <div class="sec-label">History</div>
+    <div id="sess-list"></div>
+
+    <div style="padding:12px;">
+      <a href="/analytics" style="font-size:12px;color:#1a56db;text-decoration:none;">
+        View Analytics →
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="t-title">Medico</div>
+        <!--<div class="t-sub">Flask · SQLite · ChromaDB · Reranker · Groq</div>-->
+      </div>
+      <div class="pill">LLaMA 3.3</div>
+    </div>
+
+    <div class="messages" id="msgs">
+      <div class="msg bot">
+        <div class="av">M</div>
+        <div class="bubble">Hello! I am Medico, your  Assistant. I don't know your name yet — what should I call you? 😊</div>
+      </div>
+    </div>
+
+    <div class="inputbar">
+      <input id="inp" type="text"
+        placeholder="Ask Medico anything..."
+        onkeydown="if(event.key==='Enter') send()">
+      <button class="send-btn" onclick="send()">&#10148;</button>
+    </div>
+  </main>
+
+</div>
+<script src="/static/script.js"></script>
+</body>
+</html>

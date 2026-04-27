@@ -1,0 +1,14 @@
+[
+  {
+    "pdf": "plants_and_fruits.pdf",
+    "collection": "pdf_plants_and_fruits"
+  },
+  {
+    "pdf": "pythonBOOK.pdf",
+    "collection": "pdf_pythonbook"
+  },
+  {
+    "pdf": "somatosensory.pdf",
+    "collection": "pdf_somatosensory"
+  }
+]

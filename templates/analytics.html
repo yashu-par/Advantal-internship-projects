@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medico — Analytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; color: #111; }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 36px; height: 36px; background: #1a56db;
+      border-radius: 10px; color: #fff; font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-name { font-size: 18px; font-weight: 600; }
+    .brand-sub  { font-size: 12px; color: #6b7280; }
+    .back-btn {
+      padding: 8px 16px; background: #1a56db; color: #fff;
+      border: none; border-radius: 8px; cursor: pointer; font-size: 13px;
+      text-decoration: none;
+    }
+    .back-btn:hover { background: #1648c0; }
+
+    .page-title {
+      padding: 24px 28px 8px;
+      font-size: 22px; font-weight: 600;
+    }
+    .page-sub {
+      padding: 0 28px 24px;
+      font-size: 13px; color: #6b7280;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 0 28px 28px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .stat-label { font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+    .stat-value { font-size: 28px; font-weight: 700; color: #1a56db; }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 0 28px 28px;
+    }
+    .chart-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .chart-title {
+      font-size: 14px; font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .chart-sub {
+      font-size: 12px; color: #6b7280;
+      margin-bottom: 16px;
+    }
+    canvas { max-height: 260px; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">+</div>
+    <div>
+      <div class="brand-name">Medico</div>
+      <div class="brand-sub">Analytics Dashboard</div>
+    </div>
+  </div>
+  <a href="/" class="back-btn">← Back to Chat</a>
+</div>
+
+<div class="page-title">Analytics</div>
+<div class="page-sub">SQLite database se live data — saare graphs automatically update hote hain</div>
+
+<!-- Stats Cards -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-label">Total Sessions</div>
+    <div class="stat-value" id="total-sessions">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Queries</div>
+    <div class="stat-value" id="total-queries">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Messages</div>
+    <div class="stat-value" id="total-messages">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Avg Response Time</div>
+    <div class="stat-value" id="avg-time">—</div>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="charts-grid">
+
+  <div class="chart-card">
+    <div class="chart-title">Queries per Session</div>
+    <div class="chart-sub">Har session mein kitni queries ki gayi</div>
+    <canvas id="chart-sessions"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Response Time</div>
+    <div class="chart-sub">Har query ka response time (seconds)</div>
+    <canvas id="chart-response"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">User vs Bot Messages</div>
+    <div class="chart-sub">Kitne messages user ne bheje, kitne bot ne</div>
+    <canvas id="chart-roles"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Queries by Hour</div>
+    <div class="chart-sub">Din ke kaunse waqt zyada queries aayi</div>
+    <canvas id="chart-hourly"></canvas>
+  </div>
+
+</div>
+
+<script>
+async function loadAnalytics() {
+  const res = await fetch('/api/analytics');
+  const data = await res.json();
+
+  // Stats cards
+  const totalMessages = data.role_counts.reduce((a, b) => a + b.count, 0);
+  const totalQueries = data.response_times.length;
+  const avgTime = totalQueries > 0
+    ? (data.response_times.reduce((a, b) => a + b.seconds, 0) / totalQueries).toFixed(2)
+    : 0;
+
+  document.getElementById('total-sessions').textContent = data.session_queries.length;
+  document.getElementById('total-queries').textContent = totalQueries;
+  document.getElementById('total-messages').textContent = totalMessages;
+  document.getElementById('avg-time').textContent = avgTime + 's';
+
+  // Graph 1: Queries per session — Bar chart
+  new Chart(document.getElementById('chart-sessions'), {
+    type: 'bar',
+    data: {
+      labels: data.session_queries.map(s => s.session),
+      datasets: [{
+        label: 'Queries',
+        data: data.session_queries.map(s => s.queries),
+        backgroundColor: '#1a56db',
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    }
+  });
+
+  // Graph 2: Response time — Line chart
+  new Chart(document.getElementById('chart-response'), {
+    type: 'line',
+    data: {
+      labels: data.response_times.map((_, i) => 'Q' + (i + 1)),
+      datasets: [{
+        label: 'Response Time (s)',
+        data: data.response_times.map(r => r.seconds),
+        borderColor: '#1a56db',
+        backgroundColor: 'rgba(26,86,219,0.1)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // Graph 3: User vs Bot — Pie chart
+  new Chart(document.getElementById('chart-roles'), {
+    type: 'pie',
+    data: {
+      labels: data.role_counts.map(r => r.role === 'user' ? 'User' : 'Medico Bot'),
+      datasets: [{
+        data: data.role_counts.map(r => r.count),
+        backgroundColor: ['#1a56db', '#16a34a'],
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  // Graph 4: Hourly queries — Bar chart
+  new Chart(document.getElementById('chart-hourly'), {
+    type: 'bar',
+    data: {
+      labels: data.hourly.map(h => h.hour),
+      datasets: [{
+        label: 'Queries',
+        data: data.hourly.map(h => h.count),
+        backgroundColor: '#16a34a',
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    }
+  });
+}
+
+loadAnalytics();
+</script>
+
+</body>
+</html>
