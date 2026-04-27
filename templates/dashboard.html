@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Hospital — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #f0f4ff;
+      color: #1e293b;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(99,102,241,0.08);
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .logo {
+      width: 44px; height: 44px;
+      background: #eef2ff; border: 1.5px solid #c7d2fe;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; color: #1e293b; }
+    .header p  { font-size: 12px; color: #64748b; margin-top: 1px; }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .user-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: #eef2ff; border: 1px solid #c7d2fe;
+      border-radius: 20px; padding: 6px 14px;
+      font-size: 13px; font-weight: 600; color: #4f46e5;
+    }
+    .btn-counter {
+      padding: 8px 18px;
+      background: #6366f1; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 13px; font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-counter:hover { background: #4f46e5; }
+    .btn-logout {
+      padding: 8px 18px;
+      background: #fff; color: #ef4444;
+      border: 1.5px solid #fca5a5;
+      border-radius: 10px; font-size: 13px; font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-logout:hover { background: #fee2e2; }
+
+    /* MAIN */
+    .main { max-width: 1200px; margin: 0 auto; padding: 28px 32px; }
+
+    .page-title { font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+    .page-sub   { font-size: 13px; color: #64748b; margin-bottom: 28px; }
+
+    /* STAT CARDS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .stat-card .icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 14px;
+    }
+    .stat-card .num   { font-size: 28px; font-weight: 700; color: #1e293b; }
+    .stat-card .label { font-size: 12px; color: #64748b; margin-top: 4px; font-weight: 500; }
+    .stat-card .trend { font-size: 11px; margin-top: 8px; font-weight: 600; }
+    .trend-up   { color: #16a34a; }
+    .trend-down { color: #dc2626; }
+
+    /* TWO COL */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 20px;
+    }
+
+    /* CARD */
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .card-title { font-size: 15px; font-weight: 700; color: #1e293b; }
+    .card-badge {
+      font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 20px;
+      background: #eef2ff; color: #6366f1;
+    }
+    .refresh-btn {
+      font-size: 12px; padding: 6px 14px;
+      background: #f1f5f9; border: 1px solid #e2e8f0;
+      border-radius: 8px; color: #475569; font-weight: 600;
+      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.15s;
+    }
+    .refresh-btn:hover { background: #eef2ff; color: #6366f1; }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 11px; font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    tbody tr { border-bottom: 1px solid #f8fafc; transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8faff; }
+    tbody td { padding: 12px 14px; font-size: 13px; color: #334155; vertical-align: middle; }
+
+    .name-cell { display: flex; align-items: center; gap: 10px; }
+    .name-av {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #eef2ff; color: #6366f1;
+      border: 1.5px solid #c7d2fe;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+    .name-main { font-weight: 600; color: #1e293b; }
+    .name-sub  { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+
+    .badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .badge-High   { background: #fee2e2; color: #dc2626; }
+    .badge-Medium { background: #fef9c3; color: #ca8a04; }
+    .badge-Normal { background: #dcfce7; color: #16a34a; }
+
+    .appt-badge {
+      font-size: 11px; color: #6366f1; font-weight: 600;
+      background: #eef2ff; padding: 3px 10px; border-radius: 20px;
+    }
+    .no-appt { font-size: 11px; color: #94a3b8; }
+
+    /* DOCTORS PANEL */
+    .doc-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .doc-item:last-child { border-bottom: none; }
+    .doc-av {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .doc-name { font-size: 13px; font-weight: 600; color: #1e293b; }
+    .doc-spec { font-size: 11px; color: #64748b; }
+    .doc-room { font-size: 11px; color: #6366f1; font-weight: 600; }
+    .doc-count { font-size: 11px; color: #94a3b8; text-align: right; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; margin: 4px 0 0 auto; }
+    .dot-on  { background: #22c55e; }
+    .dot-off { background: #cbd5e1; }
+
+    .empty-state {
+      text-align: center; padding: 40px 20px; color: #94a3b8;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .two-col    { grid-template-columns: 1fr; }
+      .main       { padding: 16px; }
+      .header     { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🏥</div>
+    <div>
+      <h1>City Hospital</h1>
+      <p>Admin Dashboard</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="user-badge">👤 <span id="user-name">Admin</span></div>
+    <a href="/" class="btn-counter">🖥️ Counter</a>
+    <button class="btn-logout" onclick="doLogout()">Logout</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">Dashboard Overview</div>
+  <div class="page-sub" id="dash-date">Loading...</div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="icon" style="background:#eef2ff">👥</div>
+      <div class="num"  id="stat-total">0</div>
+      <div class="label">Total Patients</div>
+      <div class="trend trend-up" id="stat-today">↑ 0 today</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon" style="background:#dcfce7">👨‍⚕️</div>
+      <div class="num"  id="stat-doctors">5</div>
+      <div class="label">Doctors Available</div>
+      <div class="trend trend-up">✓ On duty today</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon" style="background:#fef9c3">📅</div>
+      <div class="num"  id="stat-appts">0</div>
+      <div class="label">Appointments Booked</div>
+      <div class="trend trend-up" id="stat-appt-pct">— </div>
+    </div>
+    <div class="stat-card">
+      <div class="icon" style="background:#fee2e2">🔴</div>
+      <div class="num"  id="stat-high">0</div>
+      <div class="label">High Priority</div>
+      <div class="trend trend-down" id="stat-high-pct">— </div>
+    </div>
+  </div>
+
+  <!-- TABLE + DOCTORS -->
+  <div class="two-col">
+
+    <!-- Patient Table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📋 Recent Patients</div>
+        <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Patient</th>
+              <th>Symptoms</th>
+              <th>Doctor</th>
+              <th>Priority</th>
+              <th>Appointment</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="patient-table-body">
+            <tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Doctors Panel -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">👨‍⚕️ Doctors on Duty</div>
+          <div class="card-badge" id="avail-count">5 Available</div>
+        </div>
+        <div id="doctors-panel"></div>
+      </div>
+
+      <!-- Priority breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📊 Priority Breakdown</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+              <span style="color:#dc2626;font-weight:600">🔴 High</span>
+              <span id="bar-high-num" style="color:#64748b">0</span>
+            </div>
+            <div style="background:#f1f5f9;border-radius:6px;height:8px">
+              <div id="bar-high" style="background:#ef4444;height:8px;border-radius:6px;width:0%;transition:width 0.6s"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+              <span style="color:#ca8a04;font-weight:600">🟡 Medium</span>
+              <span id="bar-med-num" style="color:#64748b">0</span>
+            </div>
+            <div style="background:#f1f5f9;border-radius:6px;height:8px">
+              <div id="bar-med" style="background:#f59e0b;height:8px;border-radius:6px;width:0%;transition:width 0.6s"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+              <span style="color:#16a34a;font-weight:600">🟢 Normal</span>
+              <span id="bar-norm-num" style="color:#64748b">0</span>
+            </div>
+            <div style="background:#f1f5f9;border-radius:6px;height:8px">
+              <div id="bar-norm" style="background:#22c55e;height:8px;border-radius:6px;width:0%;transition:width 0.6s"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Load everything on page open ──────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    // Set date
+    document.getElementById('dash-date').textContent =
+      new Date().toLocaleDateString('en-US', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+    // Set logged in user
+    const user = sessionStorage.getItem('hospital_user') || 'Admin';
+    document.getElementById('user-name').textContent = user;
+
+    loadData();
+    loadDoctors();
+  });
+
+  // ── Load patient data ──────────────────────────────
+  async function loadData() {
+    try {
+      const res  = await fetch('/api/patients');
+      const data = await res.json();
+      if (!data.success) return;
+
+      const patients = data.patients;
+      const today    = new Date().toISOString().slice(0, 10);
+
+      // Stats
+      const todayPts  = patients.filter(p => p.visited_at && p.visited_at.startsWith(today)).length;
+      const highPts   = patients.filter(p => p.priority === 'High').length;
+      const medPts    = patients.filter(p => p.priority === 'Medium').length;
+      const normPts   = patients.filter(p => p.priority === 'Normal').length;
+      const apptPts   = patients.filter(p => p.appointment && p.appointment !== 'null' && p.appointment !== 'undefined').length;
+      const total     = patients.length;
+
+      document.getElementById('stat-total').textContent    = total;
+      document.getElementById('stat-today').textContent    = `↑ ${todayPts} today`;
+      document.getElementById('stat-high').textContent     = highPts;
+      document.getElementById('stat-appts').textContent    = apptPts;
+      document.getElementById('stat-high-pct').textContent = total > 0 ? `${Math.round(highPts/total*100)}% of total` : '—';
+      document.getElementById('stat-appt-pct').textContent = total > 0 ? `${Math.round(apptPts/total*100)}% booked` : '—';
+
+      // Priority bars
+      document.getElementById('bar-high-num').textContent = highPts;
+      document.getElementById('bar-med-num').textContent  = medPts;
+      document.getElementById('bar-norm-num').textContent = normPts;
+      if (total > 0) {
+        setTimeout(() => {
+          document.getElementById('bar-high').style.width = `${highPts/total*100}%`;
+          document.getElementById('bar-med').style.width  = `${medPts/total*100}%`;
+          document.getElementById('bar-norm').style.width = `${normPts/total*100}%`;
+        }, 200);
+      }
+
+      // Table
+      const tbody = document.getElementById('patient-table-body');
+      if (patients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No patients yet</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = patients.slice(0, 20).map(p => `
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">${p.id}</td>
+          <td>
+            <div class="name-cell">
+              <div class="name-av">${(p.name||'PT').slice(0,2).toUpperCase()}</div>
+              <div>
+                <div class="name-main">${p.name || '—'}</div>
+                <div class="name-sub">${p.age ? p.age+' yrs' : ''} ${p.gender ? '• '+p.gender : ''}</div>
+              </div>
+            </div>
+          </td>
+          <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#64748b;font-size:12px">
+            ${p.symptoms || '—'}
+          </td>
+          <td style="font-weight:600;color:#6366f1;font-size:12px">${p.doctor_name || '—'}</td>
+          <td>
+            ${(() => {
+              const pri = (p.priority || 'Normal').toString();
+              const normalized = pri.charAt(0).toUpperCase() + pri.slice(1).toLowerCase();
+              return `<span class="badge badge-${normalized}">${normalized}</span>`;
+            })()}
+          </td>
+          <td>
+            ${p.appointment && p.appointment !== 'null' && p.appointment !== 'undefined'
+              ? `<span class="appt-badge">📅 ${p.appointment}</span>`
+              : `<span class="no-appt">No appointment yet</span>`}
+          </td>
+          <td style="font-size:11px;color:#94a3b8">${p.visited_at || '—'}</td>
+        </tr>
+      `).join('');
+
+    } catch (err) {
+      console.error('Load error:', err);
+    }
+  }
+
+  // ── Load doctors panel ─────────────────────────────
+  async function loadDoctors() {
+    try {
+      const res  = await fetch('/api/doctors');
+      const data = await res.json();
+      if (!data.success) return;
+
+      const doctors = data.doctors;
+      const avail   = doctors.filter(d => d.available).length;
+      document.getElementById('avail-count').textContent = `${avail} Available`;
+      document.getElementById('stat-doctors').textContent = avail;
+
+      document.getElementById('doctors-panel').innerHTML = doctors.map(d => `
+        <div class="doc-item">
+          <div class="doc-av" style="background:${d.color}18;color:${d.color};border:1.5px solid ${d.color}44">
+            ${d.initials}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="doc-name">${d.name}</div>
+            <div class="doc-spec">${d.specialty}</div>
+            <div class="doc-room">${d.room}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div class="doc-count">${d.count} pts</div>
+            <div class="dot ${d.available ? 'dot-on' : 'dot-off'}"></div>
+          </div>
+        </div>
+      `).join('');
+
+    } catch (err) {
+      console.error('Doctors load error:', err);
+    }
+  }
+
+  // ── Logout ─────────────────────────────────────────
+  async function doLogout() {
+    await fetch('/api/logout', { method: 'POST' });
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.href = '/login';
+  }
+</script>
+</body>
+</html>
+
+

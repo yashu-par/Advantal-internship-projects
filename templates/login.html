@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Hospital — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f1b2d 50%, #1a2d46 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background circles decoration */
+    body::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: rgba(99,102,241,0.08);
+      border-radius: 50%;
+      top: -100px; left: -100px;
+    }
+    body::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: rgba(6,182,212,0.06);
+      border-radius: 50%;
+      bottom: -80px; right: -80px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 40px 36px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      justify-content: center;
+    }
+    .logo-box {
+      width: 46px; height: 46px;
+      background: rgba(99,102,241,0.2);
+      border: 1.5px solid rgba(99,102,241,0.4);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text h1 { font-size: 18px; font-weight: 700; color: #fff; }
+    .logo-text p  { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+
+    .tab-row {
+      display: flex;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      border-radius: 9px;
+      transition: all 0.2s;
+    }
+    .tab.active {
+      background: #6366f1;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .form-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 24px;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 7px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .field input {
+      width: 100%;
+      height: 46px;
+      padding: 0 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .field input:focus {
+      border-color: #6366f1;
+      background: rgba(99,102,241,0.1);
+    }
+    .field input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .btn {
+      width: 100%;
+      height: 48px;
+      background: #6366f1;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn:hover  { background: #4f46e5; transform: translateY(-1px); }
+    .btn:active { transform: scale(0.98); }
+
+    .error-msg {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #fca5a5;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-msg {
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #86efac;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .divider {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      margin: 20px 0 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo-row">
+    <div class="logo-box">🏥</div>
+    <div class="logo-text">
+      <h1>City Hospital</h1>
+      <p>Staff Portal</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-row">
+    <div class="tab active" id="tab-login" onclick="switchTab('login')">Login</div>
+    <div class="tab"        id="tab-signup" onclick="switchTab('signup')">Sign Up</div>
+  </div>
+
+  <!-- Error / Success -->
+  <div class="error-msg"   id="error-msg"></div>
+  <div class="success-msg" id="success-msg"></div>
+
+  <!-- LOGIN FORM -->
+  <div id="login-form">
+    <div class="form-title">Welcome back 👋</div>
+    <div class="form-sub">Login to access the hospital counter</div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Enter your username" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter your password"
+        onkeydown="if(event.key==='Enter') doLogin()" />
+    </div>
+    <button class="btn" onclick="doLogin()">Login →</button>
+    <div class="divider">Default: admin / admin123</div>
+  </div>
+
+  <!-- SIGNUP FORM -->
+  <div id="signup-form" style="display:none">
+    <div class="form-title">Create account ✨</div>
+    <div class="form-sub">Register as hospital staff</div>
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="signup-name" placeholder="Your full name" />
+    </div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="signup-user" placeholder="Choose a username" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="signup-pass" placeholder="Choose a password"
+        onkeydown="if(event.key==='Enter') doSignup()" />
+    </div>
+    <button class="btn" onclick="doSignup()">Create Account →</button>
+  </div>
+</div>
+
+<script>
+  // ── Tab switch ─────────────────────────────────
+  function switchTab(tab) {
+    document.getElementById('login-form').style.display  = tab === 'login'  ? 'block' : 'none';
+    document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
+    document.getElementById('tab-login').classList.toggle('active',  tab === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    hideMessages();
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('success-msg').style.display = 'none';
+  }
+
+  function showSuccess(msg) {
+    const el = document.getElementById('success-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('error-msg').style.display = 'none';
+  }
+
+  function hideMessages() {
+    document.getElementById('error-msg').style.display   = 'none';
+    document.getElementById('success-msg').style.display = 'none';
+  }
+
+  // ── Login ──────────────────────────────────────
+  async function doLogin() {
+    const username = document.getElementById('login-user').value.trim();
+    const password = document.getElementById('login-pass').value.trim();
+
+    if (!username || !password) {
+      showError('Please enter both username and password.');
+      return;
+    }
+
+    try {
+      const res  = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showSuccess('Login successful! Redirecting...');
+        setTimeout(() => window.location.href = '/', 800);
+      } else {
+        showError(data.message || 'Invalid username or password.');
+      }
+    } catch (err) {
+      showError('Server error. Please try again.');
+    }
+  }
+
+  // ── Signup ─────────────────────────────────────
+  async function doSignup() {
+    const name     = document.getElementById('signup-name').value.trim();
+    const username = document.getElementById('signup-user').value.trim();
+    const password = document.getElementById('signup-pass').value.trim();
+
+    if (!name || !username || !password) {
+      showError('Please fill in all fields.');
+      return;
+    }
+    if (password.length < 6) {
+      showError('Password must be at least 6 characters.');
+      return;
+    }
+
+    try {
+      const res  = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, username, password })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showSuccess('Account created! Please login.');
+        setTimeout(() => switchTab('login'), 1200);
+      } else {
+        showError(data.message || 'Signup failed.');
+      }
+    } catch (err) {
+      showError('Server error. Please try again.');
+    }
+  }
+</script>
+</body>
+</html>

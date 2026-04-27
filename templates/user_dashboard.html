@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Health — City Hospital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Plus Jakarta Sans',sans-serif; background:#f0f4ff; color:#1e293b; min-height:100vh; }
+
+    .header {
+      background:#fff; border-bottom:1px solid #e2e8f0;
+      padding:14px 32px;
+      display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:100;
+      box-shadow:0 2px 12px rgba(99,102,241,0.08);
+    }
+    .header-left { display:flex; align-items:center; gap:14px; }
+    .logo {
+      width:44px; height:44px; background:#eef2ff;
+      border:1.5px solid #c7d2fe; border-radius:12px;
+      display:flex; align-items:center; justify-content:center; font-size:22px;
+    }
+    .header h1 { font-size:18px; font-weight:700; color:#1e293b; }
+    .header p  { font-size:12px; color:#64748b; margin-top:1px; }
+    .header-right { display:flex; align-items:center; gap:10px; }
+    .user-badge {
+      display:flex; align-items:center; gap:8px;
+      background:#eef2ff; border:1px solid #c7d2fe;
+      border-radius:20px; padding:6px 14px;
+      font-size:13px; font-weight:600; color:#4f46e5;
+    }
+    .btn { padding:8px 18px; border:none; border-radius:10px; font-size:13px; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif; cursor:pointer; text-decoration:none; transition:all 0.15s; }
+    .btn-primary { background:#6366f1; color:#fff; }
+    .btn-primary:hover { background:#4f46e5; }
+    .btn-danger  { background:#fff; color:#ef4444; border:1.5px solid #fca5a5; }
+    .btn-danger:hover  { background:#fee2e2; }
+
+    .main { max-width:900px; margin:0 auto; padding:28px 32px; }
+
+    .welcome-banner {
+      background:linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius:20px; padding:28px 32px;
+      color:#fff; margin-bottom:28px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .welcome-banner h2 { font-size:22px; font-weight:700; margin-bottom:6px; }
+    .welcome-banner p  { font-size:14px; opacity:0.8; }
+    .welcome-icon { font-size:52px; }
+
+    .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+    .stat-box {
+      background:#fff; border:1px solid #e2e8f0;
+      border-radius:14px; padding:18px 16px; text-align:center;
+      box-shadow:0 1px 6px rgba(0,0,0,0.04);
+    }
+    .stat-box .num   { font-size:26px; font-weight:700; color:#6366f1; }
+    .stat-box .label { font-size:12px; color:#64748b; margin-top:4px; font-weight:500; }
+
+    .card {
+      background:#fff; border:1px solid #e2e8f0;
+      border-radius:16px; padding:22px;
+      box-shadow:0 1px 6px rgba(0,0,0,0.04);
+      margin-bottom:20px;
+    }
+    .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+    .card-title  { font-size:15px; font-weight:700; color:#1e293b; }
+
+    /* Appointment cards */
+    .appt-list { display:flex; flex-direction:column; gap:16px; }
+
+    .appt-card {
+      border:1.5px solid #e2e8f0; border-radius:16px;
+      overflow:hidden; transition:all 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .appt-card:hover { box-shadow: 0 4px 16px rgba(99,102,241,0.10); border-color:#c7d2fe; }
+
+    /* Priority left border via top bar */
+    .appt-topbar {
+      height:5px;
+      background:#e2e8f0;
+    }
+    .appt-topbar.high   { background:linear-gradient(90deg,#ef4444,#fca5a5); }
+    .appt-topbar.medium { background:linear-gradient(90deg,#f59e0b,#fde68a); }
+    .appt-topbar.normal { background:linear-gradient(90deg,#22c55e,#bbf7d0); }
+
+    .appt-body { padding:18px 20px; }
+
+    /* Confirmed badge at top right */
+    .appt-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
+    .appt-doctor { font-size:16px; font-weight:700; color:#1e293b; }
+    .appt-spec   { font-size:12px; color:#64748b; margin-top:3px; }
+    .appt-room   { font-size:12px; color:#6366f1; font-weight:600; margin-top:3px; }
+
+    .status-badge {
+      display:inline-flex; align-items:center; gap:5px;
+      padding:5px 12px; border-radius:20px;
+      font-size:12px; font-weight:700; white-space:nowrap;
+    }
+    .status-confirmed { background:#dcfce7; color:#16a34a; }
+    .status-pending   { background:#fff7ed; color:#c2410c; }
+
+    /* Info grid */
+    .info-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:10px; margin-top:12px;
+    }
+    .info-box {
+      background:#f8fafc; border:1px solid #e2e8f0;
+      border-radius:10px; padding:12px 14px;
+    }
+    .info-box .info-label {
+      font-size:11px; color:#94a3b8; font-weight:600;
+      text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;
+    }
+    .info-box .info-value {
+      font-size:13px; color:#1e293b; font-weight:600;
+    }
+    .info-box.full-width { grid-column: 1 / -1; }
+
+    /* Precautions section */
+    .precautions-section {
+      margin-top:12px;
+      background:#fffbeb; border:1.5px solid #fde68a;
+      border-radius:12px; padding:14px 16px;
+    }
+    .precautions-section .prec-title {
+      font-size:12px; font-weight:700; color:#92400e;
+      margin-bottom:8px; display:flex; align-items:center; gap:6px;
+    }
+    .precautions-section .prec-text {
+      font-size:13px; color:#78350f; line-height:1.6;
+    }
+
+    /* Symptoms chip */
+    .symptoms-area {
+      margin-top:10px;
+      background:#f1f5ff; border:1px solid #c7d2fe;
+      border-radius:10px; padding:10px 14px;
+      font-size:13px; color:#3730a3;
+    }
+
+    /* FIX: Empty state styles */
+    .no-appt-state {
+      text-align:center; padding:50px 20px; color:#94a3b8;
+    }
+    .no-appt-state .icon  { font-size:48px; margin-bottom:12px; }
+    .no-appt-state .title { font-size:16px; font-weight:600; color:#475569; margin-bottom:6px; }
+    .no-appt-state .sub   { font-size:13px; }
+
+    /* FIX: Loading state */
+    .loading-state {
+      text-align:center; padding:40px 20px; color:#94a3b8;
+    }
+    .loading-spinner {
+      width:36px; height:36px; border:3px solid #e2e8f0;
+      border-top-color:#6366f1; border-radius:50%;
+      animation:spin 0.8s linear infinite; margin:0 auto 14px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .search-bar {
+      width:100%; height:42px; padding:0 16px;
+      background:#f8fafc; border:1.5px solid #e2e8f0;
+      border-radius:10px; color:#1e293b; font-size:14px;
+      font-family:'Plus Jakarta Sans',sans-serif;
+      outline:none; margin-bottom:16px; transition:all 0.2s;
+    }
+    .search-bar:focus { border-color:#6366f1; background:#fff; }
+
+    /* Priority label chip */
+    .priority-chip {
+      display:inline-flex; align-items:center; gap:4px;
+      padding:4px 10px; border-radius:20px;
+      font-size:11px; font-weight:700;
+    }
+    .chip-high   { background:#fee2e2; color:#dc2626; }
+    .chip-medium { background:#fef9c3; color:#ca8a04; }
+    .chip-normal { background:#dcfce7; color:#16a34a; }
+
+    /* FIX: Appointment confirmed highlight */
+    .appt-slot-confirmed {
+      display:inline-flex; align-items:center; gap:6px;
+      background:#dcfce7; color:#15803d;
+      border:1px solid #bbf7d0;
+      border-radius:8px; padding:6px 12px;
+      font-size:13px; font-weight:700;
+    }
+
+    @media (max-width:700px) {
+      .main { padding:16px; }
+      .header { padding:12px 16px; }
+      .stats-row { grid-template-columns:repeat(2,1fr); }
+      .welcome-icon { display:none; }
+      .info-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🏥</div>
+    <div>
+      <h1>City Hospital</h1>
+      <p>My Health Portal</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="user-badge">👤 <span id="user-name">Loading...</span></div>
+    <a href="/" class="btn btn-primary">🖥️ Counter</a>
+    <button class="btn btn-danger" onclick="doLogout()">Logout</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div>
+      <h2>Hello, <span id="welcome-name">there</span>! 👋</h2>
+      <p>Here are all your hospital visits and appointments.</p>
+      <p id="banner-date" style="margin-top:6px;font-size:13px;opacity:0.7"></p>
+    </div>
+    <div class="welcome-icon">🏥</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="num" id="s-total">—</div>
+      <div class="label">Total Visits</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-appts" style="color:#16a34a">—</div>
+      <div class="label">Appointments Booked</div>
+    </div>
+    <div class="stat-box">
+      <div class="num" id="s-high" style="color:#dc2626">—</div>
+      <div class="label">High Priority Visits</div>
+    </div>
+  </div>
+
+  <!-- Records -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📋 My Visit Records</div>
+      <button onclick="loadMyData()" style="padding:6px 14px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;font-weight:600;color:#475569;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">🔄 Refresh</button>
+    </div>
+    <div class="appt-list" id="appt-list">
+      <!-- FIX: Proper loading state with spinner -->
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <div style="font-size:14px;font-weight:600;color:#475569;">Loading your records...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let allRecords   = [];
+  let currentName  = '';
+
+  const DOCTOR_SPECS = {
+    'Dr. Rajesh Sharma': 'Cardiologist',
+    'Dr. Priya Verma':   'Neurologist',
+    'Dr. Anil Gupta':    'Gastroenterologist',
+    'Dr. Sunita Patel':  'Pulmonologist',
+    'Dr. Mohan Singh':   'Orthopedic Surgeon',
+    'Dr. Kavita Joshi':  'General Physician'
+  };
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    document.getElementById('banner-date').textContent =
+      new Date().toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+    try {
+      const res  = await fetch('/api/session');
+      const data = await res.json();
+      if (!data.logged_in) { window.location.href='/login'; return; }
+      currentName = data.name;
+      document.getElementById('user-name').textContent    = data.name;
+      document.getElementById('welcome-name').textContent = data.name;
+    } catch(e) {
+      window.location.href = '/login';
+      return;
+    }
+
+    // FIX: Always load fresh data when dashboard opens
+    await loadMyData();
+  });
+
+  async function loadMyData() {
+    // Show spinner while loading
+    document.getElementById('appt-list').innerHTML = `
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <div style="font-size:14px;font-weight:600;color:#475569;">Loading your records...</div>
+      </div>`;
+
+    try {
+      // FIX: Use session name (logged in user's name) to fetch records
+      const nameToFetch = currentName || '';
+      const res  = await fetch(`/api/my-appointments?name=${encodeURIComponent(nameToFetch)}`);
+      const data = await res.json();
+
+      if (!data.success) {
+        showError('Failed to load records. Please try again.');
+        return;
+      }
+
+      allRecords = data.appointments || [];
+      renderRecords(allRecords);
+
+    } catch(err) {
+      console.error('Load error:', err);
+      showError('Connection error. Please refresh the page.');
+    }
+  }
+
+  function showError(msg) {
+    document.getElementById('appt-list').innerHTML = `
+      <div class="no-appt-state">
+        <div class="icon">⚠️</div>
+        <div class="title">Something went wrong</div>
+        <div class="sub">${msg}</div>
+      </div>`;
+  }
+
+  function renderRecords(records) {
+    // FIX: Update stats correctly
+    const total = records.length;
+    const appts = records.filter(r => r.appointment && r.appointment.trim() !== '').length;
+    const high  = records.filter(r => (r.priority || '').toLowerCase() === 'high').length;
+
+    document.getElementById('s-total').textContent = total;
+    document.getElementById('s-appts').textContent = appts;
+    document.getElementById('s-high').textContent  = high;
+
+    const listEl = document.getElementById('appt-list');
+
+    if (!records || records.length === 0) {
+      listEl.innerHTML = `
+        <div class="no-appt-state">
+          <div class="icon">🏥</div>
+          <div class="title">No visits yet</div>
+          <div class="sub">Your visit records will appear here after using the AI counter.</div>
+        </div>`;
+      return;
+    }
+
+    listEl.innerHTML = records.map(r => {
+      // FIX: Normalize priority properly
+      const rawPriority = (r.priority || 'Normal').trim();
+      const priority    = rawPriority.toLowerCase(); // for CSS classes
+      const priorityLabel = rawPriority;             // for display
+
+      // FIX: Check appointment properly
+      const apptValue   = (r.appointment || '').trim();
+      const isConfirmed = apptValue !== '' && apptValue !== 'null' && apptValue !== 'undefined';
+
+      const spec = DOCTOR_SPECS[r.doctor_name] || 'Specialist';
+
+      // FIX: Clean up precautions text properly
+      let precText = (r.precautions || '').trim();
+      precText = precText.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+      // Remove duplicate content if any
+      if (precText.length > 500) precText = precText.substring(0, 500) + '...';
+
+      // FIX: Clean symptoms
+      const sympText = (r.symptoms || '').trim();
+
+      return `
+        <div class="appt-card">
+          <div class="appt-topbar ${priority}"></div>
+          <div class="appt-body">
+
+            <!-- Top row: doctor info + status -->
+            <div class="appt-top">
+              <div>
+                <div class="appt-doctor">👨‍⚕️ ${r.doctor_name || 'Not assigned'}</div>
+                <div class="appt-spec">${spec}</div>
+                <div class="appt-room">📍 ${r.doctor_room || '—'}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <span class="status-badge ${isConfirmed ? 'status-confirmed' : 'status-pending'}">
+                  ${isConfirmed ? '✅ Appointment Booked' : '⏳ Slot Not Selected'}
+                </span>
+                <span class="priority-chip chip-${priority}">
+                  ${priority === 'high' ? '🔴' : priority === 'medium' ? '🟡' : '🟢'}
+                  ${priorityLabel} Priority
+                </span>
+              </div>
+            </div>
+
+            <!-- Info grid -->
+            <div class="info-grid">
+
+              <!-- FIX: Show appointment slot prominently if booked -->
+              <div class="info-box ${isConfirmed ? '' : ''}">
+                <div class="info-label">📅 Appointment Slot</div>
+                <div class="info-value">
+                  ${isConfirmed
+                    ? `<span class="appt-slot-confirmed">✅ ${apptValue}</span>`
+                    : `<span style="color:#94a3b8;font-weight:500;">Not booked yet</span>`
+                  }
+                </div>
+              </div>
+
+              <div class="info-box">
+                <div class="info-label">🕐 Visit Time</div>
+                <div class="info-value">${r.visited_at || '—'}</div>
+              </div>
+
+              ${(r.age || r.gender) ? `
+              <div class="info-box">
+                <div class="info-label">👤 Patient Info</div>
+                <div class="info-value">
+                  ${r.age ? 'Age: ' + r.age : ''}${r.age && r.gender ? ' · ' : ''}${r.gender || ''}
+                </div>
+              </div>` : ''}
+
+              <!-- Patient name -->
+              <div class="info-box">
+                <div class="info-label">🙍 Patient Name</div>
+                <div class="info-value">${r.name || '—'}</div>
+              </div>
+
+            </div>
+
+            <!-- Symptoms -->
+            ${sympText ? `
+            <div class="symptoms-area">
+              💬 <strong>Reported Symptoms:</strong> ${sympText}
+            </div>` : ''}
+
+            <!-- Precautions / Instructions -->
+            ${precText ? `
+            <div class="precautions-section">
+              <div class="prec-title">⚠️ Doctor Instructions & Precautions</div>
+              <div class="prec-text">${precText}</div>
+            </div>` : ''}
+
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function doLogout() {
+    await fetch('/api/logout', { method:'POST' });
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.href = '/login';
+  } 
+</script>
+</body>
+</html>

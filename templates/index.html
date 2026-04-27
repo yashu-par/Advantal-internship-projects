@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Hospital — AI Counter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ✅ APPOINTMENT POPUP -->
+<div class="popup-overlay" id="appt-popup" style="display:none">
+  <div class="popup-box">
+    <div class="popup-tick">✅</div>
+    <div class="popup-title">Appointment Confirmed!</div>
+    <div class="popup-sub">Your appointment has been successfully booked.</div>
+    <div class="popup-card" id="popup-details"></div>
+    <div class="popup-id" id="popup-id"></div>
+    <button class="popup-close-btn" onclick="document.getElementById('appt-popup').style.display='none'">
+      Got it — Close ✓
+    </button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-left">
+    <div class="hospital-logo">🏥</div>
+    <div>
+      <h1 class="hospital-name">City Hospital</h1>
+      <p class="hospital-sub"><span class="dot-live"></span> AI Reception Counter — Counter #3</p>
+    </div>
+  </div>
+  <div class="header-right">
+  <span id="session-name" style="font-size:13px;color:#64748b;font-weight:500"></span>
+  <a href="/dashboard" style="padding:8px 16px;background:#eef2ff;color:#6366f1;border:1.5px solid #c7d2fe;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;">📊 Dashboard</a>
+  <a href="#" onclick="fetch('/api/logout',{method:'POST'}).then(()=>{ sessionStorage.clear(); localStorage.clear(); window.location.href='/login'; });return false;" style="padding:8px 16px;background:#fff;color:#ef4444;border:1.5px solid #fca5a5;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;">Logout</a>
+</div>
+</header>
+
+<main class="main-layout">
+
+  <section class="left-col">
+    <div class="chat-card">
+      <div class="chat-topbar">
+        <div class="chat-title"><div class="ai-dot"></div> AI Consultant</div>
+        <span class="msg-count" id="msg-count">0 messages</span>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg ai-msg">
+          <div class="avatar ai-avatar">🩺</div>
+          <div class="bubble ai-bubble">
+            Hello! Welcome to City Hospital. I am your AI receptionist.<br><br>
+            To get started, please tell me your <strong>full name</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-area">
+        <div class="quick-label">Common symptoms:</div>
+        <div class="quick-btns">
+          <button class="qbtn" onclick="quickSend('I have a severe headache and nausea')">🤕 Headache</button>
+          <button class="qbtn" onclick="quickSend('I have stomach pain and vomiting')">🤢 Stomach Pain</button>
+          <button class="qbtn" onclick="quickSend('I have fever and cough')">🤧 Fever / Cough</button>
+          <button class="qbtn" onclick="quickSend('I have chest pain and difficulty breathing')">❤️ Chest Pain</button>
+          <button class="qbtn" onclick="quickSend('I have knee and back pain')">🦴 Bone Pain</button>
+          <button class="qbtn" onclick="quickSend('I feel very weak and dizzy')">😵 Weakness</button>
+        </div>
+      </div>
+
+      <div class="input-row">
+        <input type="text" id="user-input"
+          placeholder="Type your reply here..."
+          onkeydown="if(event.key==='Enter') sendMessage()" />
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">Send →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="right-col">
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-val" id="stat-total">6</div>
+        <div class="stat-label">Total Doctors</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-avail">—</div>
+        <div class="stat-label">Available</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-patients">—</div>
+        <div class="stat-label">Patients Today</div>
+      </div>
+    </div>
+
+    <div class="card doctors-card">
+      <div class="card-label">👨‍⚕️ Doctors On Duty</div>
+      <div class="doctors-list" id="doctors-list">
+        <div class="loading-txt">Loading doctors...</div>
+      </div>
+    </div>
+
+    <div class="card assigned-card" id="assigned-card" style="display:none">
+      <div class="card-label">✅ Doctor Assigned</div>
+      <div id="assigned-inner"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
