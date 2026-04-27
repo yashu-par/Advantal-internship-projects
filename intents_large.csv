@@ -1,0 +1,441 @@
+text,intent
+hello,greeting
+hi,greeting
+hey,greeting
+good morning,greeting
+good evening,greeting
+good afternoon,greeting
+hi there,greeting
+hello there,greeting
+hey there,greeting
+what's up,greeting
+howdy,greeting
+greetings,greeting
+hi buddy,greeting
+hello friend,greeting
+hey buddy,greeting
+good to see you,greeting
+nice to meet you,greeting
+hey how are you,greeting
+hello how can i help,greeting
+hi how are you doing,greeting
+hey what is going on,greeting
+good day to you,greeting
+hello is anyone there,greeting
+hi i need some help,greeting
+hey can you help me,greeting
+good morning how are you,greeting
+hi there how can i help,greeting
+hello i have a question,greeting
+hey i want to ask something,greeting
+hi good to see you,greeting
+hello can you assist me,greeting
+greetings how may i help,greeting
+hey there good morning,greeting
+hi there good evening,greeting
+good evening how are you,greeting
+hello hope you are well,greeting
+hi there nice to meet you,greeting
+hey there what is up,greeting
+hello there how are you,greeting
+good morning nice to meet you,greeting
+bye,bye
+goodbye,bye
+see you,bye
+see you later,bye
+take care,bye
+good night,bye
+have a nice day,bye
+catch you later,bye
+farewell,bye
+i am leaving,bye
+ok bye,bye
+good day,bye
+until next time,bye
+later,bye
+talk to you later,bye
+have a good day,bye
+see you soon,bye
+goodbye take care,bye
+bye bye,bye
+i will talk to you later,bye
+have a wonderful day,bye
+good night sleep well,bye
+catch you soon,bye
+i am going now,bye
+bye for now,bye
+see you tomorrow,bye
+goodbye for now,bye
+take care bye,bye
+i must go now,bye
+alright goodbye,bye
+ok see you,bye
+alright see you later,bye
+bye have a nice day,bye
+goodbye see you soon,bye
+i am heading out,bye
+ok good night,bye
+alright take care,bye
+i will be back later,bye
+goodbye until next time,bye
+ok farewell,bye
+what is the price,price
+how much does it cost,price
+what is the cost,price
+tell me the price,price
+how much is it,price
+what are the charges,price
+give me the price list,price
+how much do i need to pay,price
+what is the fee,price
+is it expensive,price
+what is the rate,price
+how much for this,price
+tell me the cost,price
+what is the pricing,price
+is there any discount,price
+how much will it cost me,price
+what is the total price,price
+can you tell me the price,price
+what does it cost,price
+how much should i pay,price
+is there any offer,price
+what is the selling price,price
+can i get a discount,price
+what are the prices,price
+how much is the fee,price
+tell me about the pricing,price
+what is the charge for this,price
+is this affordable,price
+how much does this product cost,price
+what are the payment charges,price
+tell me the rate,price
+what is the cost of this item,price
+how much do you charge,price
+what is the price range,price
+is there a special price,price
+how much for the service,price
+what are your rates,price
+can i know the price,price
+what is the discounted price,price
+how much does the plan cost,price
+i need help,help
+can you help me,help
+i have a problem,help
+please assist me,help
+i need support,help
+something is not working,help
+i am facing an issue,help
+help me please,help
+i need assistance,help
+can you assist me,help
+there is a problem,help
+i need guidance,help
+please help,help
+i am stuck,help
+i need someone to help,help
+i have an issue,help
+please support me,help
+can you guide me,help
+i need help urgently,help
+i am having trouble,help
+something went wrong,help
+i need immediate help,help
+can someone help me,help
+i am confused,help
+please resolve my issue,help
+i need technical support,help
+i have a complaint,help
+i am not able to proceed,help
+help required,help
+i need your help,help
+can you please help me,help
+i am facing difficulty,help
+i need urgent assistance,help
+please help me out,help
+i cannot do this alone,help
+need some guidance please,help
+i am lost please help,help
+please assist me urgently,help
+i need help right now,help
+something is wrong please help,help
+how do i place an order,order
+i want to order,order
+i want to buy something,order
+how can i purchase,order
+i want to make a purchase,order
+can i order online,order
+how to buy,order
+i want to place an order,order
+how do i buy this,order
+i want to order now,order
+can i place an order,order
+i would like to order,order
+how to purchase,order
+add to cart,order
+i want to shop,order
+i want to buy this product,order
+how do i shop online,order
+i want to make an order,order
+can i buy this online,order
+i want to purchase something,order
+how to add to cart,order
+i want to order this item,order
+can i order this right now,order
+i would like to purchase,order
+how do i complete my purchase,order
+i want to checkout,order
+can i buy this product,order
+how to place order online,order
+i want to order from your store,order
+i would like to buy,order
+how can i buy this item,order
+i want to get this product,order
+can i make a purchase online,order
+i want to add this to my order,order
+how do i order this,order
+i want to buy now,order
+can you help me place an order,order
+i would like to make a purchase,order
+how do i buy from your store,order
+i want to purchase this now,order
+where is my order,order_status
+track my order,order_status
+what is the status of my order,order_status
+when will my order arrive,order_status
+my order has not arrived,order_status
+how long will delivery take,order_status
+is my order shipped,order_status
+order tracking,order_status
+where is my package,order_status
+delivery status,order_status
+has my order been dispatched,order_status
+when will i get my order,order_status
+i want to track my package,order_status
+my package is missing,order_status
+order not received,order_status
+i want to know my order status,order_status
+when will my package be delivered,order_status
+my order is delayed,order_status
+i have not received my order yet,order_status
+can you track my order,order_status
+where is my delivery,order_status
+how long till my order arrives,order_status
+i want to check my order,order_status
+my shipment is late,order_status
+when is my order coming,order_status
+i need to track my package,order_status
+has my package been shipped,order_status
+my order status is not updated,order_status
+can i check my delivery status,order_status
+what happened to my order,order_status
+i want to know delivery date,order_status
+my package has not arrived,order_status
+how do i track my shipment,order_status
+when will the delivery happen,order_status
+i am waiting for my order,order_status
+my order is taking too long,order_status
+can you check my order status,order_status
+what is the delivery time,order_status
+i need an update on my order,order_status
+when will my item be delivered,order_status
+i want to return this,return
+how do i return a product,return
+can i get a refund,return
+i want my money back,return
+how to return an item,return
+return policy,return
+i am not happy with the product,return
+can i exchange this,return
+i want to exchange,return
+how long does refund take,return
+can i cancel my order,return
+i want to cancel,return
+refund process,return
+how to get refund,return
+i want to return my order,return
+i want to send this back,return
+how do i get a refund,return
+i need to return this product,return
+can i get my money back,return
+i am unhappy with my purchase,return
+the product is defective,return
+i received a wrong item,return
+i want to cancel my purchase,return
+how do i exchange this product,return
+can i replace this item,return
+i want a replacement,return
+the item is damaged,return
+i need to cancel my order,return
+how long does return take,return
+i want to initiate a return,return
+can i return this product,return
+i want to reverse my order,return
+how do i claim a refund,return
+this product is not as described,return
+i want to return and get refund,return
+can i get store credit,return
+i want to exchange for another item,return
+the order was wrong,return
+i received a damaged product,return
+how do i return a damaged item,return
+what are your working hours,hours
+when are you open,hours
+what time do you open,hours
+what time do you close,hours
+are you open on sunday,hours
+what are your office hours,hours
+when is your shop open,hours
+are you open today,hours
+what time does the store open,hours
+business hours,hours
+are you available on weekends,hours
+when can i contact you,hours
+what are your timings,hours
+is the store open now,hours
+opening time,hours
+what time do you start,hours
+when do you close,hours
+are you open on holidays,hours
+what are your service hours,hours
+when is customer support available,hours
+till what time are you open,hours
+what time does support close,hours
+are you open on saturday,hours
+when does your store close,hours
+are you available right now,hours
+what time can i call you,hours
+is support available 24 hours,hours
+when are your offices open,hours
+what are the store timings,hours
+are you open on public holidays,hours
+when can i visit your store,hours
+what is the closing time,hours
+are you open in the morning,hours
+till what time can i reach you,hours
+are you available in the evening,hours
+what time should i call,hours
+when is the best time to contact,hours
+are you open right now,hours
+what are the working hours today,hours
+when do you start in the morning,hours
+where are you located,location
+what is your address,location
+where is your office,location
+where is your store,location
+how do i reach you,location
+can you give me directions,location
+what is your location,location
+where can i find you,location
+how do i get to your store,location
+are you near me,location
+what city are you in,location
+give me your address,location
+where is your shop,location
+nearest store location,location
+find your store,location
+where is your showroom,location
+how far are you from me,location
+can you share your address,location
+where exactly are you located,location
+which area are you in,location
+how do i visit your store,location
+what is the nearest branch,location
+where is your head office,location
+can i visit your office,location
+how do i find your store,location
+what is the pincode of your store,location
+in which city is your store,location
+where is your warehouse,location
+can you tell me your location,location
+is there a store near me,location
+how to reach your office,location
+what is your branch address,location
+where is the nearest outlet,location
+how do i come to your store,location
+can i get the store address,location
+which road is your store on,location
+where is your service center,location
+how do i locate your store,location
+is there a branch in my city,location
+what is the address of your shop,location
+thank you,thanks
+thanks a lot,thanks
+thank you so much,thanks
+many thanks,thanks
+i appreciate it,thanks
+you are very helpful,thanks
+great help,thanks
+thanks for the help,thanks
+much appreciated,thanks
+that was helpful,thanks
+thank you for your support,thanks
+you helped me a lot,thanks
+i am grateful,thanks
+awesome help,thanks
+thank you very much,thanks
+thanks a ton,thanks
+really appreciate your help,thanks
+you are amazing,thanks
+great job,thanks
+thank you for everything,thanks
+i am thankful,thanks
+you did a great job,thanks
+this was very helpful,thanks
+thanks for solving my problem,thanks
+i really appreciate it,thanks
+you were very kind,thanks
+thank you for being so helpful,thanks
+this helped me a lot,thanks
+thanks for the quick response,thanks
+you made my day,thanks
+thank you for your time,thanks
+i am very grateful,thanks
+thanks for your assistance,thanks
+you are so helpful,thanks
+thank you for guiding me,thanks
+i appreciate your help,thanks
+thanks for the information,thanks
+thank you for clarifying,thanks
+you resolved my issue,thanks
+i am glad you helped me,thanks
+who are you,about
+what are you,about
+are you a bot,about
+are you human,about
+what can you do,about
+tell me about yourself,about
+what is your name,about
+are you an AI,about
+how do you work,about
+what is your purpose,about
+what do you do,about
+are you a robot,about
+introduce yourself,about
+tell me what you can help with,about
+what services do you provide,about
+are you a real person,about
+who made you,about
+what are your capabilities,about
+are you automated,about
+how were you created,about
+what is your function,about
+are you intelligent,about
+can you think,about
+what technology are you built on,about
+how smart are you,about
+are you a virtual assistant,about
+who is your creator,about
+what can i ask you,about
+how do you understand me,about
+what is your job,about
+are you a chatbot,about
+how do you respond,about
+what language do you speak,about
+can you help me with everything,about
+what are your features,about
+how do you know the answers,about
+are you always available,about
+what makes you different,about
+how do i use you,about
+can you learn from me,about
